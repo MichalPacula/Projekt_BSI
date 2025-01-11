@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/Projekt_BSI/venv/bin/python3
 
 import customtkinter as ctk
 import os
